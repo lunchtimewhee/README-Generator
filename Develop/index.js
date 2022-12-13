@@ -2,7 +2,41 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
 
-// TODO: Create an array of questions for user input
+// Object containing links to badges
+const badgeLinks = {
+    apache: '[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)',
+
+    bsd2: '[![License](https://img.shields.io/badge/License-BSD_2--Clause-orange.svg)](https://opensource.org/licenses/BSD-2-Clause)',
+
+    bsd3: '[![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)',
+
+    gpl: '[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)',
+
+    lgpl: '[![License: LGPL v3](https://img.shields.io/badge/License-LGPL_v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)',
+
+    mit: '[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)',
+
+    mozilla: '[![License: MPL 2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)',
+
+    eclipse:'[![License](https://img.shields.io/badge/License-EPL_1.0-red.svg)](https://opensource.org/licenses/EPL-1.0)', 
+};
+
+const licenses = {
+    apache:'Apache License 2.0',
+    bsd2: 'BSD 2-Clause Simplified or FreeBSD license',
+    bsd3: 'BSD 3-Clause New or Revised license',
+    gpl: 'GNU General Public License (GPL)',
+    lgpl: 'GNU Library or Lesser Public License',
+    mit: 'MIT License',
+    mozilla: 'Mozzila Public License 2.0',
+    eclipse: 'Eclipse Public License version 2.0'
+};
+
+const licenseList = Object.keys(licenses);
+
+
+
+// Array for questions
 const questions = [
     {
         type: 'input',
@@ -15,30 +49,30 @@ const questions = [
         name: 'Description',       
     },
     {
-        type: 'input',
+        type: 'editor',
         message: 'Installation Instructions: ',
-        name: 'Installation',       
+        name: 'Installation Instructions',       
+    },
+    {
+        type: 'editor',
+        message: 'Usage information: ',
+        name: 'Usage Information',       
     },
     {
         type: 'list',
         message: 'License: ',
-        choices: ['MIT','Apache', 'Academic Free License v3.0', 'GNU General Public License v3.0'],
+        choices: licenseList,
         name: 'License',       
     },
     {
-        type: 'input',
-        message: 'Usage information: ',
-        name: 'Usage',       
+        type: 'editor',
+        message: 'Contribution guidelines: ',
+        name: 'Contribution Guidelines',       
     },
     {
-        type: 'input',
+        type: 'editor',
         message: 'Testing instructions: ',
         name: 'Testing Instructions',       
-    },
-    {
-        type: 'input',
-        message: 'Contribution guidelines: ',
-        name: 'How to Contribute',       
     },
     {
         type: 'input',
@@ -49,46 +83,54 @@ const questions = [
         type: 'input',
         message: 'Email: ',
         name: 'Email',       
-    }
+    },
+   
 ];
+
+
 
 let answers = []; // let to hold answers
 
-// TODO: Create a function to write README file
+// Function to write data to given fileName
 const writeToFile = function(fileName, data) {
     let modifiedData = data;
     
     // Create a new file if it is not there, replace the current file if it is there
-    fs.writeFile(fileName, `# ${modifiedData[0][0]}\n\n`,(err) =>{
+    fs.writeFile(fileName, `# ${modifiedData[0][1]}\n\n`,(err) =>{
         err ? console.log(err) : console.log(`Wrote to ${fileName} successfully.`);
     });
 
-    const tableOfContentsText = `- [Installation](#installation)\n- [Usage](#usage)\n- [Credits](#credits)\n- [License](#license)\n\n`;
+    // Create Table of Contents
+    const tableOfContentsText = `- [Installation](#installation)\n- [Usage](#usage)\n- [Credits](#credits)\n- [License](#license)`;
+    console.log(modifiedData);
+    // Modify answers data to insert Table of Contents and consolidate Github user and Email for Credits
+    modifiedData.splice(2,0,['Table of Contents',tableOfContentsText]); 
+    modifiedData.splice(4,0,['Questions?',`Github: https://github.com/${modifiedData[modifiedData.length - 2][1]}\nEmail: ${modifiedData[modifiedData.length - 1][1]}`])
+    console.log(modifiedData);
 
-    modifiedData.splice(2,0,[tableOfContentsText,{name:'Table of Contents'}]);
-    modifiedData.splice(4,0,[`Github: ${modifiedData[modifiedData.length - 2][0]} Email: ${modifiedData[modifiedData.length - 1][0]}`,{name:'Credits'}])
-
+    // Go through each answer in modifiedData and add the header + contents into the README file
     modifiedData.slice(1, modifiedData.length - 2).forEach((answer, index) => {
-        fs.appendFile(fileName,`## ${answer[1].name}\n${answer[0]}\n\n`,(err) =>{
+        if(answer[0] === 'License'){
+            answer[1] = badgeLinks[answer[1]];
+        }
+        fs.appendFile(fileName,`## ${answer[0]}\n${answer[1]}\n\n`,(err) =>{
             err ? console.log(err) : console.log(`Wrote to ${fileName} successfully.`);
         });
     });
+    console.log(modifiedData);
 };
 
 const askQuestions = async function(){
-    // For loop to ask a list of questions and generate a list of answers that will be used for the README File
-    for(const question of questions){
-        const answer = await inquirer.prompt(question);
-        answers.push([answer[question.name],question]);
-    };
-}
+    // Generate a list of answers that will be used for the README File
+    const rawAnswers = await inquirer.prompt(questions);
+    answers = Object.entries(rawAnswers);
+};
 
 // TODO: Create a function to initialize app
 const init = async function() {
     await askQuestions();
     writeToFile('test.md', answers);
-}
+};
 
 // Function call to initialize app
 init();
-
