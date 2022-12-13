@@ -9,23 +9,22 @@ b
 - [Credits](#credits)
 - [License](#license)
 
+## Installation Instructions
 
 
-## Credits
-Github: g Email: h
-
-## Installation
-c
+## Questions?
+Github: https://github.com/lunchtimewhee
+Email: anthonyrli1994@gmail.com
 
 ## License
-MIT
-
-## Usage
-d
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 ## Testing Instructions
-e
 
-## How to Contribute
-f
+
+## Contribution Guidelines
+
+
+## Usage Information
+
 
