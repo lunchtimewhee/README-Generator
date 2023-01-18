@@ -101,11 +101,15 @@ const writeToFile = function(fileName, data) {
     });
 
     // Create Table of Contents
-    const tableOfContentsText = `- [Installation](#installation)\n- [Usage](#usage)\n- [Credits](#credits)\n- [License](#license)`;
+    let tableOfContentsText = ''//`- [Installation](#installation)\n- [Usage](#usage)\n- [Credits](#credits)\n- [License](#license)`;
+    modifiedData.forEach((question) => {
+        tableOfContentsText = `${tableOfContentsText} -[${question[0]}](#${question[0].toLowerCase().split(' ').join('-')})\n`
+    });
     console.log(modifiedData);
     // Modify answers data to insert Table of Contents and consolidate Github user and Email for Credits
     modifiedData.splice(2,0,['Table of Contents',tableOfContentsText]); 
-    modifiedData.splice(4,0,['Questions?',`Github: https://github.com/${modifiedData[modifiedData.length - 2][1]}\nEmail: ${modifiedData[modifiedData.length - 1][1]}`])
+    modifiedData.splice(4,0,['Questions?',`Github: https://github.com/${modifiedData[modifiedData.length - 2][1]}
+Email: ${modifiedData[modifiedData.length - 1][1]}`])
     console.log(modifiedData);
 
     // Go through each answer in modifiedData and add the header + contents into the README file
