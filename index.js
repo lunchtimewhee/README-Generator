@@ -102,8 +102,13 @@ const writeToFile = function(fileName, data) {
 
     // Create Table of Contents
     let tableOfContentsText = ''//`- [Installation](#installation)\n- [Usage](#usage)\n- [Credits](#credits)\n- [License](#license)`;
-    modifiedData.forEach((question) => {
-        tableOfContentsText = `${tableOfContentsText} -[${question[0]}](#${question[0].toLowerCase().split(' ').join('-')})\n`
+    modifiedData.forEach((question, index) => {
+        if(index === 0){
+            tableOfContentsText = `${tableOfContentsText} - [${question[0]}](#${question[1].toLowerCase().split(' ').join('-')})\n`
+        }
+        else{
+            tableOfContentsText = `${tableOfContentsText} - [${question[0]}](#${question[0].toLowerCase().split(' ').join('-')})\n`
+        }
     });
     console.log(modifiedData);
     // Modify answers data to insert Table of Contents and consolidate Github user and Email for Credits
