@@ -108,7 +108,7 @@ const writeToFile = function(fileName, data) {
             tableOfContentsText = `${tableOfContentsText} - [${question[1]}](#${question[1].toLowerCase().split(' ').join('-')})\n`
         }
         else if(question[0] === 'Github Username'){
-            tableOfContentsText = `${tableOfContentsText} - [Questions?](#questions?)\n`
+            tableOfContentsText = `${tableOfContentsText} - [Questions?](#questions)\n`
         }
         else if(question[0] === 'Email'){
 
@@ -118,7 +118,6 @@ const writeToFile = function(fileName, data) {
         }
     });
 
-    console.log(modifiedData);
     // Modify answers data to insert Table of Contents and consolidate Github user and Email for Credits
     modifiedData.splice(2,0,['Table of Contents',tableOfContentsText]); 
     modifiedData.splice(4,0,['Questions?',`- Github: https://github.com/${modifiedData[modifiedData.length - 2][1]} \n- Email: ${modifiedData[modifiedData.length - 1][1]}`])
