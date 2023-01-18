@@ -129,7 +129,7 @@ const askQuestions = async function(){
 // TODO: Create a function to initialize app
 const init = async function() {
     await askQuestions();
-    writeToFile('test.md', answers);
+    writeToFile('README.md', answers);
 };
 
 // Function call to initialize app
