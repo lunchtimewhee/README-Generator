@@ -23,8 +23,13 @@ A template program used to create a README for all of your coding projects.
 - Email: anthonyrli1994@gmail.com
 
 ## Usage Information
+Video: https://app.castify.com/watch/91f3f42d-f894-4a4d-b4a4-d040b75231d4
+
 1. Prompts will start as soon as the program is run.
+[![step1](./images/step1.JPG)]
+
 2. Enter in answers to all of the prompts and a README will be generated based off of those answers.
+[![step2](./images/step2.JPG)]
 
 ## License
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
